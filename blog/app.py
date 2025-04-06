@@ -5,7 +5,7 @@ import subprocess
 from config import SECRET_KEY
 
 app = Flask(__name__)
-app.config['UPLOAD_FOLDER'] = 'static/uploads/'
+app.config['SECRET_KEY'] = 'SECRET_KEY'
 
 # Database initialization
 def init_db():
