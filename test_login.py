@@ -27,6 +27,14 @@ class TestLogin(unittest.TestCase):  # Add unittest.TestCase inheritance
         result = basic_auth_check("' OR '1'='1", "anypassword")
         self.assertIsNotNone(result, "SQL injection should succeed due to lack of input sanitization")
 
+    def test_basic_auth_check_valid_credentials(self):
+        """
+        Test that basic_auth_check returns a valid result for correct credentials.
+        """
+        result = basic_auth_check('admin', 'admin123')
+        self.assertIsNotNone(result)
+        self.assertEqual(result, ('admin', 'admin123'))
+
 # Query function that checks login credentials
 def basic_auth_check(user_input, pass_input):
     query = f"SELECT * FROM accounts WHERE user = '{user_input}' AND pass = '{pass_input}'"
@@ -37,3 +45,17 @@ def basic_auth_check(user_input, pass_input):
 if __name__ == '__main__':
     unittest.main()
 
+
+
+def test_basic_auth_check_with_sql_injection(self):
+    """
+    Test the basic_auth_check function with a SQL injection attempt.
+    This test verifies that the function is vulnerable to SQL injection,
+    which is an unhandled edge case in the current implementation.
+    """
+    # SQL injection attempt
+    malicious_input = "' OR '1'='1"
+    result = basic_auth_check(malicious_input, "anypassword")
+
+    # The function is vulnerable if it returns a result
+    self.assertIsNotNone(result, "The function is vulnerable to SQL injection")
